@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>24 часа к себе</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #f5d8cc 0, transparent 35%),
+        radial-gradient(circle at bottom right, #d9c8ff 0, transparent 35%),
+        linear-gradient(135deg, #fff8f1, #f7f0ff);
+      color: #332727;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      padding: 32px;
+      box-shadow: 0 24px 70px rgba(76, 52, 92, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #f1dfd2;
+      color: #7b5140;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 62px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6b5b57;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .hero-text {
+      margin-bottom: 26px;
+      font-size: 18px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 18px;
+      padding: 15px 22px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      background: #4d3b75;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(77, 59, 117, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: #3d2e61;
+    }
+
+    .btn-secondary {
+      background: #f0e2d7;
+      color: #694c42;
+    }
+
+    .btn-secondary:hover {
+      background: #e8d5c8;
+    }
+
+    .btn-disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .challenge-box {
+      min-height: 280px;
+      background: linear-gradient(145deg, #fff, #fff4ec);
+      border: 1px solid #eeddd1;
+      border-radius: 28px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .challenge-title {
+      font-size: 26px;
+      line-height: 1.25;
+      font-weight: 800;
+      margin: 12px 0 16px;
+    }
+
+    .challenge-skill {
+      font-size: 15px;
+      color: #725f59;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 22px;
+    }
+
+    .stat-number {
+      font-size: 34px;
+      font-weight: 800;
+      color: #4d3b75;
+      margin-bottom: 6px;
+    }
+
+    .progress-wrap {
+      margin-top: 18px;
+      background: #eadbd2;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 12px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4d3b75, #a985c7);
+      transition: 0.4s ease;
+    }
+
+    .offers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .offer {
+      position: relative;
+      padding: 24px;
+      border-radius: 26px;
+      background: #fffaf6;
+      border: 1px solid #eadbd2;
+      overflow: hidden;
+    }
+
+    .offer.locked {
+      opacity: 0.68;
+      filter: grayscale(0.2);
+    }
+
+    .offer-status {
+      display: inline-block;
+      font-size: 12px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #eee0d7;
+      color: #765344;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .offer.unlocked .offer-status {
+      background: #e7dcff;
+      color: #4d3b75;
+    }
+
+    .price {
+      margin: 16px 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: #4d3b75;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #9a8882;
+      font-size: 15px;
+      margin-left: 8px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .day {
+      border-radius: 16px;
+      padding: 14px 6px;
+      text-align: center;
+      background: #f1e5dc;
+      color: #75584d;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .day.done {
+      background: #4d3b75;
+      color: #fff;
+    }
+
+    .course {
+      margin-top: 28px;
+      background: linear-gradient(145deg, #4d3b75, #7b5ca8);
+      color: #fff;
+    }
+
+    .course p {
+      color: rgba(255,255,255,0.86);
+    }
+
+    .course .btn {
+      margin-top: 20px;
+      background: #fff;
+      color: #4d3b75;
+    }
+
+    .notice {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #7b6860;
+    }
+
+    .reset {
+      margin-top: 18px;
+      background: transparent;
+      border: none;
+      color: #8d7770;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .admin-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(51, 39, 39, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+    }
+
+    .admin-overlay.hidden {
+      display: none;
+    }
+
+    .admin-modal {
+      width: 100%;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: 0 24px 70px rgba(76, 52, 92, 0.25);
+    }
+
+    .admin-modal h2 {
+      margin-bottom: 8px;
+    }
+
+    .admin-hint {
+      font-size: 14px;
+      color: #7b6860;
+      margin-bottom: 22px;
+    }
+
+    .admin-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .admin-field label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #694c42;
+    }
+
+    .admin-field input {
+      border: 1px solid #eadbd2;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    .admin-error {
+      color: #b42318;
+      font-size: 14px;
+      min-height: 20px;
+      margin-bottom: 12px;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .admin-stat {
+      text-align: center;
+      padding: 18px 12px;
+      background: #f9f3ee;
+      border-radius: 18px;
+      border: 1px solid #eadbd2;
+    }
+
+    .admin-stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #4d3b75;
+      margin-bottom: 4px;
+    }
+
+    .admin-stat p {
+      font-size: 13px;
+    }
+
+    .admin-updated {
+      font-size: 13px;
+      color: #8d7770;
+      margin-bottom: 18px;
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .admin-panel-body.hidden {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .admin-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .animate {
+      animation: reveal 0.45s ease;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid,
+      .offers {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="hero">
+      <div class="card">
+        <span class="badge" id="adminTrigger">Интерактив для саморазвития</span>
+        <h1>24 часа к себе</h1>
+        <p class="hero-text">
+          Получайте короткие задания, выполняйте их в течение дня,
+          собирайте баллы и открывайте специальные предложения на уроки
+          и индивидуальную работу.
+        </p>
+        <button class="btn btn-primary" onclick="getChallenge()">Получить вызов на сегодня</button>
+      </div>
+
+      <div class="card challenge-box" id="challengeCard">
+        <span class="badge">Ваш вызов</span>
+        <div class="challenge-title" id="challengeText">
+          Нажмите кнопку, чтобы получить задание на 24 часа.
+        </div>
+        <p class="challenge-skill" id="challengeSkill">
+          После выполнения вы получите 10 баллов.
+        </p>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="completeChallenge()">Я выполнила вызов</button>
+          <button class="btn btn-secondary" onclick="getChallenge()">Выбрать другой вызов</button>
+        </div>
+
+        <div class="notice" id="notice"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card stat">
+        <div class="stat-number" id="points">0</div>
+        <p>баллов</p>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-number" id="completed">0</div>
+        <p>выполненных вызовов</p>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-number" id="streak">0</div>
+        <p>дней подряд</p>
+      </div>
+
+      <div class="card stat">
+        <div class="stat-number" id="nextBonus">30</div>
+        <p>баллов до ближайшего предложения</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Ваш прогресс</h2>
+      <p>
+        За каждый выполненный вызов начисляется 10 баллов. Возвращайтесь каждый день,
+        чтобы сохранить серию и быстрее открыть специальные условия.
+      </p>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="calendar" id="calendar"></div>
+    </section>
+
+    <section class="card" style="margin-top: 28px;">
+      <h2>Открытые предложения</h2>
+      <p>
+        Это не просто скидки. Это награда за включенность, действие и регулярный контакт с собой.
+      </p>
+
+      <div class="offers" id="offers"></div>
+    </section>
+
+    <section class="card course">
+      <h2>Хотите создавать такие интерактивы самостоятельно?</h2>
+      <p>
+        Этот сайт — пример того, как простая HTML-игра может вовлекать аудиторию,
+        возвращать людей на страницу, собирать внимание и мягко подводить к покупке.
+      </p>
+      <p style="margin-top: 12px;">
+        На курсе по созданию сайтов, лендингов и интерактивов вы научитесь делать такие механики
+        для своих продуктов, запусков, Telegram, Instagram, GetCourse и других площадок.
+      </p>
+      <a href="https://galileya2008-byte.github.io/6-aineurogalina/#" target="_blank" class="btn">
+        Хочу научиться создавать такие сайты
+      </a>
+    </section>
+
+    <button class="reset" onclick="resetProgress()">Сбросить прогресс</button>
+
+  </main>
+
+  <div class="admin-overlay hidden" id="adminOverlay">
+    <div class="admin-modal">
+      <div id="adminLogin">
+        <h2>Админ-панель</h2>
+        <p class="admin-hint">Статистика посещений сайта. Вход только для владельца.</p>
+        <div class="admin-field">
+          <label for="adminPassword">Пароль</label>
+          <input type="password" id="adminPassword" placeholder="Введите пароль" onkeydown="if(event.key==='Enter')loginAdmin()" />
+        </div>
+        <div class="admin-error" id="adminError"></div>
+        <div class="admin-actions">
+          <button class="btn btn-primary" onclick="loginAdmin()">Войти</button>
+          <button class="btn btn-secondary" onclick="closeAdmin()">Закрыть</button>
+        </div>
+      </div>
+
+      <div id="adminDashboard" class="admin-panel-body hidden">
+        <h2>Статистика посещений</h2>
+        <p class="admin-hint">Данные обновляются при каждом заходе на сайт.</p>
+
+        <div class="admin-stats">
+          <div class="admin-stat">
+            <div class="admin-stat-number" id="statPageviews">—</div>
+            <p>всего просмотров</p>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-number" id="statVisitors">—</div>
+            <p>уникальных посетителей</p>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-number" id="statToday">—</div>
+            <p>заходов сегодня</p>
+          </div>
+        </div>
+
+        <p class="admin-updated" id="adminUpdated"></p>
+        <div class="admin-error" id="adminStatsError"></div>
+
+        <div class="admin-actions">
+          <button class="btn btn-primary" onclick="refreshAdminStats()">Обновить</button>
+          <button class="btn btn-secondary" onclick="closeAdmin()">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_CONFIG = {
+      password: "galina24",
+      namespace: "neurogalina-24chasa",
+      apiBase: "https://api.countapi.xyz"
+    };
+
+    const challenges = [
+      {
+        text: "Запишите 10 своих достижений за последний год.",
+        skill: "Развивает самоценность, опору на опыт и видимость собственного результата."
+      },
+      {
+        text: "Проведите 1 час без телефона и соцсетей.",
+        skill: "Развивает фокус, внутреннюю тишину и управление вниманием."
+      },
+      {
+        text: "Напишите письмо себе через год.",
+        skill: "Развивает контакт с будущим образом себя и личной стратегией."
+      },
+      {
+        text: "Сделайте одно дело, которое давно откладывали.",
+        skill: "Развивает действие, завершение и выход из прокрастинации."
+      },
+      {
+        text: "Скажите себе 5 честных поддерживающих фраз.",
+        skill: "Развивает бережность к себе и устойчивость к внутренней критике."
+      },
+      {
+        text: "Наведите порядок в одном маленьком пространстве.",
+        skill: "Развивает ощущение контроля, ясность и легкость."
+      },
+      {
+        text: "Выпишите 5 страхов и напротив каждого — один реальный шаг.",
+        skill: "Развивает трезвость, управляемость и снижение тревоги."
+      },
+      {
+        text: "Сделайте комплимент 3 людям.",
+        skill: "Развивает открытость, контактность и позитивное внимание."
+      },
+      {
+        text: "Откажитесь сегодня от одной лишней задачи.",
+        skill: "Развивает границы, приоритеты и уважение к своему ресурсу."
+      },
+      {
+        text: "Запишите, что вы хотите чувствовать через месяц.",
+        skill: "Развивает эмоциональную цель и связь с личными потребностями."
+      },
+      {
+        text: "Сделайте 20 минут тишины без музыки, видео и переписок.",
+        skill: "Развивает самонаблюдение, спокойствие и контакт с собой."
+      },
+      {
+        text: "Составьте список: что меня наполняет?",
+        skill: "Развивает понимание личных источников энергии."
+      },
+      {
+        text: "Выберите одну цель и пропишите первый микрошаг.",
+        skill: "Развивает стратегическое действие без перегруза."
+      },
+      {
+        text: "Поблагодарите человека, который на вас повлиял.",
+        skill: "Развивает благодарность, связь и эмоциональную зрелость."
+      },
+      {
+        text: "Сделайте сегодня что-то не ради пользы, а ради радости.",
+        skill: "Развивает живость, удовольствие и разрешение себе."
+      },
+      {
+        text: "Нарисуйте символ своего состояния сегодня.",
+        skill: "Развивает визуальный контакт с собой и осознанность."
+      },
+      {
+        text: "Запишите 3 решения, которые вы больше не хотите откладывать.",
+        skill: "Развивает ясность, ответственность и внутреннюю опору."
+      },
+      {
+        text: "Выпишите 5 качеств, которые помогают вам двигаться.",
+        skill: "Развивает уверенность и понимание собственных сильных сторон."
+      },
+      {
+        text: "Сделайте маленькое действие для тела: прогулка, вода или растяжка.",
+        skill: "Развивает заботу о себе через простые физические действия."
+      },
+      {
+        text: "Опишите свою идеальную спокойную неделю.",
+        skill: "Развивает навык планирования через состояние, а не только задачи."
+      }
+    ];
+
+    const offers = [
+      {
+        points: 30,
+        title: "Урок «Дисциплина и рост»",
+        price: "799 руб",
+        oldPrice: "1999 руб",
+        button: "Забрать урок за 799 руб",
+        link: "https://t.me/neiro_galina"
+      },
+      {
+        points: 70,
+        title: "Урок «НейроДрево моего личного роста»",
+        price: "599 руб",
+        oldPrice: "1999 руб",
+        button: "Забрать урок за 599 руб",
+        link: "https://t.me/neiro_galina"
+      },
+      {
+        points: 140,
+        title: "Индивидуальная сессия",
+        price: "3000 руб",
+        oldPrice: "6000 руб",
+        button: "Записаться за 3000 руб",
+        link: "https://t.me/neiro_galina"
+      }
+    ];
+
+    let state = {
+      points: 0,
+      completed: 0,
+      streak: 0,
+      lastVisit: null,
+      completedDates: [],
+      currentChallenge: null,
+      completedToday: false
+    };
+
+    function today() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function yesterday(dateString) {
+      const date = new Date(dateString);
+      date.setDate(date.getDate() - 1);
+      return date.toISOString().slice(0, 10);
+    }
+
+    function calculateStreak(completedDates, currentDate) {
+      const dates = new Set(completedDates);
+      if (dates.size === 0) return 0;
+
+      let startDate = currentDate;
+      if (!dates.has(startDate)) {
+        startDate = yesterday(currentDate);
+        if (!dates.has(startDate)) return 0;
+      }
+
+      let streak = 0;
+      let date = startDate;
+      while (dates.has(date)) {
+        streak++;
+        date = yesterday(date);
+      }
+      return streak;
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem("challengeState");
+      if (saved) {
+        state = JSON.parse(saved);
+      }
+
+      const currentDate = today();
+
+      if (state.lastVisit && state.lastVisit !== currentDate) {
+        state.completedToday = false;
+      }
+
+      state.streak = calculateStreak(state.completedDates || [], currentDate);
+      state.lastVisit = currentDate;
+      saveState();
+      render();
+    }
+
+    function saveState() {
+      localStorage.setItem("challengeState", JSON.stringify(state));
+    }
+
+    function getChallenge() {
+      if (state.completedToday) {
+        showNotice("Сегодняшний вызов уже выполнен. Возвращайтесь завтра за новым заданием.");
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * challenges.length);
+      state.currentChallenge = challenges[randomIndex];
+
+      const card = document.getElementById("challengeCard");
+      card.classList.remove("animate");
+      void card.offsetWidth;
+      card.classList.add("animate");
+
+      document.getElementById("challengeText").textContent = state.currentChallenge.text;
+      document.getElementById("challengeSkill").textContent = state.currentChallenge.skill;
+      showNotice("");
+
+      saveState();
+    }
+
+    function completeChallenge() {
+      if (!state.currentChallenge) {
+        showNotice("Сначала получите вызов.");
+        return;
+      }
+
+      if (state.completedToday) {
+        showNotice("Вы уже получили баллы за сегодняшний вызов.");
+        return;
+      }
+
+      const currentDate = today();
+
+      state.points += 10;
+      state.completed += 1;
+      state.completedToday = true;
+
+      if (!state.completedDates.includes(currentDate)) {
+        state.completedDates.push(currentDate);
+      }
+
+      state.streak = calculateStreak(state.completedDates, currentDate);
+      state.lastVisit = currentDate;
+
+      saveState();
+      render();
+      showNotice("Вызов выполнен. Начислено 10 баллов.");
+    }
+
+    function showNotice(text) {
+      document.getElementById("notice").textContent = text;
+    }
+
+    function render() {
+      document.getElementById("points").textContent = state.points;
+      document.getElementById("completed").textContent = state.completed;
+      document.getElementById("streak").textContent = state.streak;
+
+      const next = offers.find(offer => state.points < offer.points);
+      document.getElementById("nextBonus").textContent = next ? next.points - state.points : 0;
+
+      const maxPoints = 140;
+      const progress = Math.min((state.points / maxPoints) * 100, 100);
+      document.getElementById("progressBar").style.width = progress + "%";
+
+      renderOffers();
+      renderCalendar();
+    }
+
+    function renderOffers() {
+      const container = document.getElementById("offers");
+      container.innerHTML = "";
+
+      offers.forEach(offer => {
+        const unlocked = state.points >= offer.points;
+
+        const div = document.createElement("div");
+        div.className = "offer " + (unlocked ? "unlocked" : "locked");
+
+        div.innerHTML = `
+          <div class="offer-status">
+            ${unlocked ? "Открыто" : "Пока закрыто · нужно " + offer.points + " баллов"}
+          </div>
+          <h3>${offer.title}</h3>
+          <p>
+            ${unlocked
+              ? "Вы открыли специальное предложение."
+              : "Выполняйте вызовы, чтобы открыть специальную цену."}
+          </p>
+          <div class="price">
+            ${unlocked ? offer.price + '<span class="old-price">' + offer.oldPrice + '</span>' : "🔒"}
+          </div>
+          <a class="btn ${unlocked ? "btn-primary" : "btn-secondary btn-disabled"}" href="${offer.link}" target="_blank">
+            ${unlocked ? offer.button : "Откроется позже"}
+          </a>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    function renderCalendar() {
+      const container = document.getElementById("calendar");
+      container.innerHTML = "";
+
+      const now = new Date();
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(now.getDate() - i);
+
+        const key = date.toISOString().slice(0, 10);
+        const day = document.createElement("div");
+
+        day.className = "day " + (state.completedDates.includes(key) ? "done" : "");
+        day.textContent = date.toLocaleDateString("ru-RU", { weekday: "short" });
+
+        container.appendChild(day);
+      }
+    }
+
+    function resetProgress() {
+      localStorage.removeItem("challengeState");
+      state = {
+        points: 0,
+        completed: 0,
+        streak: 0,
+        lastVisit: null,
+        completedDates: [],
+        currentChallenge: null,
+        completedToday: false
+      };
+
+      document.getElementById("challengeText").textContent =
+        "Нажмите кнопку, чтобы получить задание на 24 часа.";
+      document.getElementById("challengeSkill").textContent =
+        "После выполнения вы получите 10 баллов.";
+
+      showNotice("");
+      loadState();
+    }
+
+    async function counterRequest(action, key) {
+      const url = `${ADMIN_CONFIG.apiBase}/${action}/${ADMIN_CONFIG.namespace}/${key}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Счётчик недоступен");
+      }
+
+      const data = await response.json();
+      return typeof data.value === "number" ? data.value : 0;
+    }
+
+    async function trackVisit() {
+      try {
+        await counterRequest("hit", "pageviews");
+        await counterRequest("hit", "daily-" + today());
+
+        if (!localStorage.getItem("visitCounted")) {
+          await counterRequest("hit", "visitors");
+          localStorage.setItem("visitCounted", "1");
+        }
+      } catch (error) {
+        console.warn("Не удалось записать визит:", error);
+      }
+    }
+
+    function openAdmin() {
+      document.getElementById("adminOverlay").classList.remove("hidden");
+
+      if (sessionStorage.getItem("adminAuth") === "1") {
+        showAdminDashboard();
+        refreshAdminStats();
+      } else {
+        showAdminLogin();
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById("adminOverlay").classList.add("hidden");
+      document.getElementById("adminPassword").value = "";
+      document.getElementById("adminError").textContent = "";
+    }
+
+    function showAdminLogin() {
+      document.getElementById("adminLogin").classList.remove("hidden");
+      document.getElementById("adminDashboard").classList.add("hidden");
+    }
+
+    function showAdminDashboard() {
+      document.getElementById("adminLogin").classList.add("hidden");
+      document.getElementById("adminDashboard").classList.remove("hidden");
+    }
+
+    function loginAdmin() {
+      const password = document.getElementById("adminPassword").value;
+      const error = document.getElementById("adminError");
+
+      if (password !== ADMIN_CONFIG.password) {
+        error.textContent = "Неверный пароль";
+        return;
+      }
+
+      sessionStorage.setItem("adminAuth", "1");
+      error.textContent = "";
+      showAdminDashboard();
+      refreshAdminStats();
+    }
+
+    async function refreshAdminStats() {
+      const errorEl = document.getElementById("adminStatsError");
+      errorEl.textContent = "";
+
+      document.getElementById("statPageviews").textContent = "…";
+      document.getElementById("statVisitors").textContent = "…";
+      document.getElementById("statToday").textContent = "…";
+
+      try {
+        const [pageviews, visitors, todayVisits] = await Promise.all([
+          counterRequest("get", "pageviews"),
+          counterRequest("get", "visitors"),
+          counterRequest("get", "daily-" + today())
+        ]);
+
+        document.getElementById("statPageviews").textContent = pageviews;
+        document.getElementById("statVisitors").textContent = visitors;
+        document.getElementById("statToday").textContent = todayVisits;
+        document.getElementById("adminUpdated").textContent =
+          "Обновлено: " + new Date().toLocaleString("ru-RU");
+      } catch (error) {
+        errorEl.textContent = "Не удалось загрузить статистику. Проверьте интернет и попробуйте снова.";
+        document.getElementById("statPageviews").textContent = "—";
+        document.getElementById("statVisitors").textContent = "—";
+        document.getElementById("statToday").textContent = "—";
+      }
+    }
+
+    function initAdmin() {
+      let triggerClicks = 0;
+
+      document.getElementById("adminTrigger").addEventListener("click", function () {
+        triggerClicks += 1;
+        if (triggerClicks >= 5) {
+          triggerClicks = 0;
+          openAdmin();
+        }
+      });
+
+      if (new URLSearchParams(location.search).has("admin")) {
+        openAdmin();
+      }
+
+      document.getElementById("adminOverlay").addEventListener("click", function (event) {
+        if (event.target === event.currentTarget) {
+          closeAdmin();
+        }
+      });
+    }
+
+    loadState();
+    trackVisit();
+    initAdmin();
+  </script>
+</body>
+</html>
